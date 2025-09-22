@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.CheckBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.PasswordField?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.effect.DropShadow?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane prefHeight="600.0" prefWidth="500.0" style="-fx-background-color: linear-gradient(to bottom right, #667eea 0%, #764ba2 100%);" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="lk.ijse.drivingschoolmanagement.controller.LoginFormController">
+   <children>
+      <VBox alignment="CENTER" spacing="0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+         <children>
+            <VBox alignment="CENTER" prefWidth="450.0" spacing="10.0" style="-fx-background-color: white; -fx-background-radius: 15; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.3), 20, 0, 0, 5);">
+               <padding>
+                  <Insets bottom="50.0" left="50.0" right="50.0" top="50.0" />
+               </padding>
+               <children>
+                  <VBox alignment="CENTER" spacing="5.0">
+                     <children>
+                        <Label style="-fx-font-size: 48px;" text="🚗" />
+                        <Label text="Elite Driving School" textFill="#2c3e50">
+                           <font>
+                              <Font name="System Bold" size="24.0" />
+                           </font>
+                        </Label>
+                        <Label text="Management System" textFill="#7f8c8d">
+                           <font>
+                              <Font size="14.0" />
+                           </font>
+                        </Label>
+                     </children>
+                  </VBox>
+                  <VBox alignment="CENTER" spacing="8">
+                     <children>
+                        <Label text="Welcome Back!" textFill="#2c3e50">
+                           <font>
+                              <Font name="System Bold" size="28.0" />
+                           </font>
+                        </Label>
+                        <Label text="Sign in to access your dashboard" textFill="#7f8c8d">
+                           <font>
+                              <Font size="16.0" />
+                           </font>
+                        </Label>
+                     </children>
+                  </VBox>
+                  <VBox prefWidth="350.0" spacing="10.0">
+                     <children>
+                        <VBox spacing="8">
+                           <children>
+                              <Label text="Email Address" textFill="#34495e">
+                                 <font>
+                                    <Font name="System Bold" size="14.0" />
+                                 </font>
+                              </Label>
+                              <TextField fx:id="txtUsername" prefHeight="45.0" promptText="Enter your email address" style="-fx-background-radius: 8; -fx-border-color: #ddd; -fx-border-radius: 8; -fx-padding: 10;">
+                                 <effect>
+                                    <DropShadow blurType="GAUSSIAN" color="rgba(0,0,0,0.1)" radius="3" />
+                                 </effect>
+                                 <font>
+                                    <Font size="14.0" />
+                                 </font>
+                              </TextField>
+                           </children>
+                        </VBox>
+                        <VBox spacing="8">
+                           <children>
+                              <Label text="Password" textFill="#34495e">
+                                 <font>
+                                    <Font name="System Bold" size="14.0" />
+                                 </font>
+                              </Label>
+                              <PasswordField fx:id="txtPassword" prefHeight="45.0" promptText="Enter your password" style="-fx-background-radius: 8; -fx-border-color: #ddd; -fx-border-radius: 8; -fx-padding: 10;">
+                                 <effect>
+                                    <DropShadow blurType="GAUSSIAN" color="rgba(0,0,0,0.1)" radius="3" />
+                                 </effect>
+                                 <font>
+                                    <Font size="14.0" />
+                                 </font>
+                              </PasswordField>
+                           </children>
+                        </VBox>
+                        <HBox alignment="CENTER_LEFT" spacing="80">
+                           <children>
+                              <CheckBox fx:id="chkRememberMe" prefHeight="19.0" prefWidth="194.0" text="Remember me" textFill="#7f8c8d">
+                                 <font>
+                                    <Font size="13.0" />
+                                 </font>
+                              </CheckBox>
+                              <Button fx:id="btnForgotPassword" onAction="#btnForgotPasswordOnAction" style="-fx-background-color: transparent; -fx-cursor: hand;" text="Forgot Password?" textFill="#3498db">
+                                 <font>
+                                    <Font size="13.0" />
+                                 </font>
+                              </Button>
+                           </children>
+                        </HBox>
+                        <Button fx:id="btnLogin" maxWidth="Infinity" onAction="#btnLoginOnAction" prefHeight="50.0" style="-fx-background-color: linear-gradient(to right, #667eea, #764ba2); -fx-background-radius: 8; -fx-cursor: hand;" text="Login to Dashboard" textFill="WHITE">
+                           <effect>
+                              <DropShadow blurType="GAUSSIAN" color="rgba(0,0,0,0.2)" radius="5" />
+                           </effect>
+                           <font>
+                              <Font name="System Bold" size="16.0" />
+                           </font>
+                        </Button>
+                     </children>
+                  </VBox>
+                  <VBox alignment="CENTER" spacing="5">
+                     <children>
+                        <Label text="Elite Driving School Management System" textFill="#bdc3c7">
+                           <font>
+                              <Font size="12.0" />
+                           </font>
+                        </Label>
+                        <Label text="© 2025 All Rights Reserved" textFill="#bdc3c7">
+                           <font>
+                              <Font size="11.0" />
+                           </font>
+                        </Label>
+                     </children>
+                  </VBox>
+               </children>
+            </VBox>
+         </children>
+      </VBox>
+   </children>
+</AnchorPane>
