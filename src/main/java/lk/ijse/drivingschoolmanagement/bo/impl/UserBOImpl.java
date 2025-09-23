@@ -22,8 +22,11 @@ public class UserBOImpl implements UserBO {
         try {
             return HibernateUtil.execute(session -> {
                 User user = convertToEntity(userDTO);
-                // Use getPassword() instead of getRawPassword()
-                user.setPassword(BCrypt.hashpw(userDTO.getPassword(), BCrypt.gensalt()));
+
+                if (userDTO.getPassword() != null && !userDTO.getPassword().isEmpty()) {
+                    user.setPassword(hashPasswordIfNeeded(userDTO.getPassword()));
+                }
+
                 return userDAO.save(user, session);
             });
         } catch (RuntimeException e) {
@@ -43,10 +46,8 @@ public class UserBOImpl implements UserBO {
                 User user = existingOpt.get();
                 updateUserEntity(user, userDTO);
 
-                // Check if password needs to be updated
-                if (userDTO.getPassword() != null && !userDTO.getPassword().isEmpty() &&
-                        !userDTO.getPassword().startsWith("$2a$")) { // Check if it's not already hashed
-                    user.setPassword(BCrypt.hashpw(userDTO.getPassword(), BCrypt.gensalt()));
+                if (userDTO.getPassword() != null && !userDTO.getPassword().isEmpty()) {
+                    user.setPassword(hashPasswordIfNeeded(userDTO.getPassword()));
                 }
 
                 return userDAO.update(user, session);
@@ -54,6 +55,24 @@ public class UserBOImpl implements UserBO {
         } catch (RuntimeException e) {
             throw new SQLException("Failed to update user: " + e.getMessage(), e);
         }
+    }
+
+    private String hashPasswordIfNeeded(String password) {
+        if (password == null || password.isEmpty()) return password;
+        if (password.startsWith("$2a$") || password.startsWith("$2b$") || password.startsWith("$2y$")) {
+            return password;
+        }
+        return BCrypt.hashpw(password, BCrypt.gensalt());
+    }
+
+    private void updateUserEntity(User user, UserDTO userDTO) {
+        user.setUserId(userDTO.getUserId());
+        user.setName(userDTO.getName());
+        user.setEmail(userDTO.getEmail());
+        user.setPhoneNo(userDTO.getPhoneNo());
+        user.setUserName(userDTO.getUserName());
+        user.setRole(userDTO.getRole());
+        user.setActive(userDTO.isActive());
     }
 
     @Override
@@ -124,81 +143,6 @@ public class UserBOImpl implements UserBO {
     }
 
     @Override
-    public boolean authenticateUser(String username, String password) throws SQLException {
-        try {
-            return HibernateUtil.executeWithoutTransaction(session -> {
-                Optional<User> userOpt = userDAO.findByUsername(username, session);
-                if (userOpt.isPresent()) {
-                    User user = userOpt.get();
-                    return user.isActive() && BCrypt.checkpw(password, user.getPassword());
-                }
-                return false;
-            });
-        } catch (RuntimeException e) {
-            throw new SQLException("Failed to authenticate user: " + e.getMessage(), e);
-        }
-    }
-
-    @Override
-    public boolean changePassword(String userId, String currentPassword, String newPassword) throws SQLException {
-        try {
-            return HibernateUtil.execute(session -> {
-                Optional<User> userOpt = userDAO.findById(userId, session);
-                if (userOpt.isEmpty()) {
-                    throw new RuntimeException("User not found: " + userId);
-                }
-
-                User user = userOpt.get();
-
-                if (!BCrypt.checkpw(currentPassword, user.getPassword())) {
-                    throw new RuntimeException("Current password is incorrect");
-                }
-
-                user.setPassword(BCrypt.hashpw(newPassword, BCrypt.gensalt()));
-                return userDAO.update(user, session);
-            });
-        } catch (RuntimeException e) {
-            throw new SQLException("Failed to change password: " + e.getMessage(), e);
-        }
-    }
-
-    @Override
-    public boolean deactivateUser(String userId) throws SQLException {
-        try {
-            return HibernateUtil.execute(session -> {
-                Optional<User> userOpt = userDAO.findById(userId, session);
-                if (userOpt.isEmpty()) {
-                    throw new RuntimeException("User not found: " + userId);
-                }
-
-                User user = userOpt.get();
-                user.setActive(false);
-                return userDAO.update(user, session);
-            });
-        } catch (RuntimeException e) {
-            throw new SQLException("Failed to deactivate user: " + e.getMessage(), e);
-        }
-    }
-
-    @Override
-    public boolean activateUser(String userId) throws SQLException {
-        try {
-            return HibernateUtil.execute(session -> {
-                Optional<User> userOpt = userDAO.findById(userId, session);
-                if (userOpt.isEmpty()) {
-                    throw new RuntimeException("User not found: " + userId);
-                }
-
-                User user = userOpt.get();
-                user.setActive(true);
-                return userDAO.update(user, session);
-            });
-        } catch (RuntimeException e) {
-            throw new SQLException("Failed to activate user: " + e.getMessage(), e);
-        }
-    }
-
-    @Override
     public UserDTO findByEmail(String email) throws SQLException {
         try {
             return HibernateUtil.executeWithoutTransaction(session ->
@@ -211,30 +155,9 @@ public class UserBOImpl implements UserBO {
         }
     }
 
-    // Helper method to check if password is already hashed
-    private boolean isPasswordHashed(String password) {
-        return password != null && password.startsWith("$2a$");
-    }
-
     private User convertToEntity(UserDTO userDTO) {
         User user = new User();
         updateUserEntity(user, userDTO);
         return user;
-    }
-
-    private void updateUserEntity(User user, UserDTO userDTO) {
-        user.setUserId(userDTO.getUserId());
-        user.setName(userDTO.getName());
-        user.setEmail(userDTO.getEmail());
-        user.setPhoneNo(userDTO.getPhoneNo());
-        user.setUserName(userDTO.getUserName());
-        user.setRole(userDTO.getRole());
-        user.setActive(userDTO.isActive());
-
-        // Only set password if it's provided and not already hashed
-        if (userDTO.getPassword() != null && !userDTO.getPassword().isEmpty() &&
-                !isPasswordHashed(userDTO.getPassword())) {
-            user.setPassword(BCrypt.hashpw(userDTO.getPassword(), BCrypt.gensalt()));
-        }
     }
 }

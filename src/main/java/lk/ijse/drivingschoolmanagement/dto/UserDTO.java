@@ -24,7 +24,7 @@ public class UserDTO {
 
     private boolean active;
 
-    private String rawPassword;
+    private String password;
 
     public UserDTO(User entity) {
         this.userId = entity.getUserId();
@@ -34,5 +34,6 @@ public class UserDTO {
         this.userName = entity.getUserName();
         this.role = entity.getRole();
         this.active = entity.isActive();
+        this.password = entity.getPassword();
     }
 }

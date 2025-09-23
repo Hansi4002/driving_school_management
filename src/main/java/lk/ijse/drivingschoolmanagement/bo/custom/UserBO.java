@@ -13,10 +13,6 @@ public interface UserBO {
     List<UserDTO> findAllUsers() throws SQLException;
     String getNextUserId() throws SQLException;
     UserDTO findByUsername(String username) throws SQLException;
-    boolean authenticateUser(String username, String password) throws SQLException;
-    boolean changePassword(String userId, String currentPassword, String newPassword) throws SQLException;
-    boolean deactivateUser(String userId) throws SQLException;
-    boolean activateUser(String userId) throws SQLException;
 
     UserDTO findByEmail(String email) throws SQLException;
 }
