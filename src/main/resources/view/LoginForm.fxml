@@ -59,7 +59,7 @@
                                     <Font name="System Bold" size="14.0" />
                                  </font>
                               </Label>
-                              <TextField fx:id="txtUsername" prefHeight="45.0" promptText="Enter your email address" style="-fx-background-radius: 8; -fx-border-color: #ddd; -fx-border-radius: 8; -fx-padding: 10;">
+                              <TextField fx:id="txtEmail" prefHeight="45.0" promptText="Enter your email address" style="-fx-background-radius: 8; -fx-border-color: #ddd; -fx-border-radius: 8; -fx-padding: 10;">
                                  <effect>
                                     <DropShadow blurType="GAUSSIAN" color="rgba(0,0,0,0.1)" radius="3" />
                                  </effect>
@@ -86,18 +86,19 @@
                               </PasswordField>
                            </children>
                         </VBox>
-                        <HBox alignment="CENTER_LEFT" spacing="80">
+                        <HBox alignment="CENTER_LEFT" spacing="10.0">
                            <children>
-                              <CheckBox fx:id="chkRememberMe" prefHeight="19.0" prefWidth="194.0" text="Remember me" textFill="#7f8c8d">
+                              <CheckBox fx:id="chkRememberMe" prefHeight="19.0" prefWidth="146.0" text="Remember me" textFill="#7f8c8d">
                                  <font>
                                     <Font size="13.0" />
                                  </font>
                               </CheckBox>
-                              <Button fx:id="btnForgotPassword" onAction="#btnForgotPasswordOnAction" style="-fx-background-color: transparent; -fx-cursor: hand;" text="Forgot Password?" textFill="#3498db">
+                              <Button fx:id="btnForgotPassword" onAction="#btnForgotPasswordOnAction" prefHeight="27.0" prefWidth="126.0" style="-fx-background-color: transparent; -fx-cursor: hand;" text="Forgot Password?" textFill="#3498db">
                                  <font>
                                     <Font size="13.0" />
                                  </font>
                               </Button>
+                              <Button fx:id="btnEmergency" layoutX="520" layoutY="320" onAction="#btnEmergencyLoginOnAction" prefHeight="26.0" prefWidth="108.0" style="-fx-background-color: #ff9f43; -fx-text-fill: white;" text="Emergency Login" />
                            </children>
                         </HBox>
                         <Button fx:id="btnLogin" maxWidth="Infinity" onAction="#btnLoginOnAction" prefHeight="50.0" style="-fx-background-color: linear-gradient(to right, #667eea, #764ba2); -fx-background-radius: 8; -fx-cursor: hand;" text="Login to Dashboard" textFill="WHITE">
