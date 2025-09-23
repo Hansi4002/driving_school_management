@@ -8,9 +8,10 @@ import lk.ijse.drivingschoolmanagement.dto.PaymentDTO;
 import lk.ijse.drivingschoolmanagement.entity.Payment;
 import lk.ijse.drivingschoolmanagement.entity.Student;
 import lk.ijse.drivingschoolmanagement.util.HibernateUtil;
+import org.hibernate.query.Query;
 
+import java.math.BigDecimal;
 import java.sql.SQLException;
-import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -120,22 +121,16 @@ public class PaymentBOImpl implements PaymentBO {
 
     @Override
     public double getMonthlyRevenue() {
-        try {
-            return HibernateUtil.executeWithoutTransaction(session -> {
-                LocalDate now = LocalDate.now();
-                String hql = "SELECT SUM(p.amount) FROM Payment p " +
-                        "WHERE MONTH(p.date) = :currentMonth AND YEAR(p.date) = :currentYear";
-                Double revenue = (Double) session.createQuery(hql)
-                        .setParameter("currentMonth", now.getMonthValue())
-                        .setParameter("currentYear", now.getYear())
-                        .uniqueResult();
-                return revenue != null ? revenue : 0.0;
-            });
-        } catch (RuntimeException e) {
-            e.printStackTrace();
-            return 0.0;
-        }
+        return HibernateUtil.executeWithoutTransaction(session -> {
+            Query query = session.createQuery(
+                    "SELECT SUM(p.amount) FROM Payment p WHERE MONTH(p.date) = MONTH(CURRENT_DATE()) AND YEAR(p.date) = YEAR(CURRENT_DATE())"
+            );
+
+            BigDecimal result = (BigDecimal) query.getSingleResult();
+            return result != null ? result.doubleValue() : 0.0;
+        });
     }
+
 
     private Payment convertToEntity(PaymentDTO paymentDTO) {
         Payment payment = new Payment();
