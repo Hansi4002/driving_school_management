@@ -1,4 +1,4 @@
-package lk.ijse.drivingschoolmanagement.utill;
+package lk.ijse.drivingschoolmanagement.util;
 
 import lk.ijse.drivingschoolmanagement.entity.*;
 import org.hibernate.Session;
