@@ -64,7 +64,6 @@ public class LoginFormController {
         }
 
         try {
-            // Find user by email first, if not found try username
             UserDTO user = userBO.findByEmail(emailOrUsername);
             if (user == null) {
                 user = userBO.findByUsername(emailOrUsername);
@@ -86,18 +85,15 @@ public class LoginFormController {
                 return;
             }
 
-            // ✅ BCrypt verification
             if (BCrypt.checkpw(password, storedHash)) {
                 System.out.println("✓ Password verification successful!");
 
-                // Remember me logic
                 if (chkRememberMe.isSelected()) {
                     prefs.put("email", emailOrUsername);
                 } else {
                     prefs.remove("email");
                 }
 
-                // Navigate to dashboard
                 navigateToDashboard(user);
 
             } else {

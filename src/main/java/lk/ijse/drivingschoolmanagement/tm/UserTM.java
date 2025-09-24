@@ -15,4 +15,5 @@ public class UserTM {
     private String userName;
     private String role;
     private boolean active;
+    private String password;
 }

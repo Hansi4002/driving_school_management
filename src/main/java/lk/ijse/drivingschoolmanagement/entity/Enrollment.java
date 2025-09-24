@@ -13,7 +13,6 @@ import java.time.LocalDate;
 @Entity
 public class Enrollment {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private String enrollmentId;
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -28,10 +27,4 @@ public class Enrollment {
     private Payment payment;
 
     private LocalDate enrollmentDate = LocalDate.now();
-
-//    public void setStudentId(String studentId) {
-//    }
-//
-//    public void setCourseId(String courseId) {
-//    }
 }

@@ -22,11 +22,7 @@ public class UserBOImpl implements UserBO {
         try {
             return HibernateUtil.execute(session -> {
                 User user = convertToEntity(userDTO);
-
-                if (userDTO.getPassword() != null && !userDTO.getPassword().isEmpty()) {
-                    user.setPassword(hashPasswordIfNeeded(userDTO.getPassword()));
-                }
-
+                user.setPassword(hashPasswordIfNeeded(userDTO.getPassword()));
                 return userDAO.save(user, session);
             });
         } catch (RuntimeException e) {
@@ -44,7 +40,7 @@ public class UserBOImpl implements UserBO {
                 }
 
                 User user = existingOpt.get();
-                updateUserEntity(user, userDTO);
+//                updateUserEntity(user, userDTO);
 
                 if (userDTO.getPassword() != null && !userDTO.getPassword().isEmpty()) {
                     user.setPassword(hashPasswordIfNeeded(userDTO.getPassword()));
@@ -58,7 +54,6 @@ public class UserBOImpl implements UserBO {
     }
 
     private String hashPasswordIfNeeded(String password) {
-        if (password == null || password.isEmpty()) return password;
         if (password.startsWith("$2a$") || password.startsWith("$2b$") || password.startsWith("$2y$")) {
             return password;
         }

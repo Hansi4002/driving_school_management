@@ -28,9 +28,14 @@ public class StudentBOImpl implements StudentBO {
     }
 
     @Override
-    public boolean updateStudent(StudentDTO studentDTO) throws SQLException, ClassNotFoundException {
+    public boolean updateStudent(StudentDTO studentDTO) throws SQLException {
         try {
             return HibernateUtil.execute(session -> {
+                Optional<Student> existingOpt = studentDAO.findById(studentDTO.getStudentId(), session);
+                if (existingOpt.isEmpty()) {
+                    throw new RuntimeException("Student not found for update: " + studentDTO.getStudentId());
+                }
+
                 Student student = convertToEntity(studentDTO);
                 return studentDAO.update(student, session);
             });

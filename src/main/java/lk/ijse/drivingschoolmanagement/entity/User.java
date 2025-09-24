@@ -28,9 +28,9 @@ public class User {
 
     private boolean active = true;
 
-    public void setPassword(String rawPassword) {
-        this.password = BCrypt.hashpw(rawPassword, BCrypt.gensalt());
-    }
+//    public void setPassword(String rawPassword) {
+//        this.password = BCrypt.hashpw(rawPassword, BCrypt.gensalt());
+//    }
 
     public boolean verifyPassword(String rawPassword) {
         return BCrypt.checkpw(rawPassword, this.password);
